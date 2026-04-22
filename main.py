@@ -1,17 +1,16 @@
 import random
-from systems.player_system import Player
+from systems.player import Player
 from data.highscore import *
 from data.settings import *
 import data.assets as assets
 import pygame
 
-
 pygame.init()
 pygame.mixer.init()
-assets.load_assets()
 
 # SCREEN
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+assets.load_assets()
 pygame.display.set_caption("Multiverse Runner")
 
 clock = pygame.time.Clock()
@@ -59,7 +58,11 @@ def create_explosion(x, y, color):
 def reset_game(full_reset=False):
     global player_obj, scroll, game_state, all_platforms, finish_line, lives, start_ticks, spikes, projectiles, current_level_num, particles, death_timer, last_projectile_time
 
-    pygame.mixer.music.play(-1)
+    if assets.bg_music_path:
+        pygame.mixer.music.load(assets.bg_music_path)
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1)
+
     last_projectile_time = pygame.time.get_ticks()
     player_obj = Player()
     scroll = 0
